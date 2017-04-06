@@ -38,11 +38,14 @@ public class DispatcherServlet extends HttpServlet {
 	}
 	public void requestProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String command=request.getParameter("command");
-	
 		Controller controller=HandlerMapping.getInstance().create(command);
+		System.out.println(command);
 		String url="error.jsp";
 		try {
 				url=controller.execute(request, response);
+				if(url.equals("Ajax")){
+					return;
+				}
 			if(url.trim().startsWith("redirect:")){
 				response.sendRedirect(url.trim().substring(9));
 			}else{
